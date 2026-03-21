@@ -36,7 +36,7 @@
 <div id="panel">
   <div class="panel-header">
     <h3 id="title" style="margin:0"></h3>
-    <button class="close-btn" onclick="closePanel()">✕</button>
+    <!-- <button class="close-btn" onclick="closePanel()">✕</button> -->
   </div>
   <a id="addressLink" class="panel-link" target="_blank"></a>
   <a id="phoneLink" class="panel-link"></a>
@@ -77,6 +77,11 @@ function initMap() {
     zoomControl: true
   });
 
+  // CLOSE PANEL ON MAP CLICK
+  map.addListener("click", () => {
+    closePanel();
+  });
+
   new google.maps.Marker({
     position: userLoc,
     map: map,
@@ -99,7 +104,11 @@ function initMap() {
           position: { lat: parseFloat(loc.lat), lng: parseFloat(loc.lng) },
           map: map
         });
-        marker.addListener("click", () => openPanel(loc));
+        marker.addListener("click", (e) => {
+          // Stop the click from bubbling to the map listener
+          if (e.stop) e.stop();
+          openPanel(loc);
+        });
       });
     })
     .catch(err => {
