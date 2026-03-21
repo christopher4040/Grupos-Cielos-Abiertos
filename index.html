@@ -72,7 +72,7 @@ function initMap() {
   const userLoc = selectedPlace.geometry.location;
   map = new google.maps.Map(document.getElementById("map"), {
     center: userLoc,
-    zoom: 12, // You might want to zoom out slightly to see 1km circles better
+    zoom: 12, 
     disableDefaultUI: true,
     zoomControl: true
   });
@@ -82,7 +82,7 @@ function initMap() {
     closePanel();
   });
 
-  // User location marker (Keep this as a solid dot so the user knows where they are)
+  // User location marker (Blue dot)
   new google.maps.Marker({
     position: userLoc,
     map: map,
@@ -101,21 +101,20 @@ function initMap() {
     .then(data => {
       document.getElementById("loader").style.display = "none";
       data.forEach(loc => {
-        // Create a Circle instead of a Marker
+        // Create a Red Circle
         const groupCircle = new google.maps.Circle({
-          strokeColor: "#87CEEB", // Sky Blue
-          strokeOpacity: 0.8,
+          strokeColor: "#FF0000", // Pure Red
+          strokeOpacity: 0.6,
           strokeWeight: 2,
-          fillColor: "#87CEEB",
-          fillOpacity: 0.35,
+          fillColor: "#FF0000",   // Pure Red
+          fillOpacity: 0.3,       // Soft transparency
           map: map,
           center: { lat: parseFloat(loc.lat), lng: parseFloat(loc.lng) },
-          radius: 1000 // 1km in meters
+          radius: 1000 // 1km radius
         });
 
-        // Add the click listener to the circle itself
+        // Click listener for the red zone
         groupCircle.addListener("click", (e) => {
-          // Stop the click from bubbling to the map listener
           if (e.stop) e.stop();
           openPanel(loc);
         });
