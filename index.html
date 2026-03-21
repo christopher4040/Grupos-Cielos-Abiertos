@@ -6,16 +6,29 @@
   <title>Group Locator</title>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuTtPhCKTfi-9Oo3qKdckV6fS6nt5I1H4&libraries=places"></script>
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; font-family: sans-serif; background: #f5f7fb; }
+    html, body { margin: 0; padding: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto; background: #f5f7fb; }
     #step1 { position: fixed; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; background: #f5f7fb; }
-    .card { width: 90%; max-width: 400px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; margin: 16px; }
+    .card { width: 90%; max-width: 400px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
     input { width: 100%; padding: 15px; font-size: 16px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-    button { width: 100%; padding: 15px; background: #4f46e5; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+    button.primary-btn { width: 100%; padding: 15px; background: #4f46e5; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+    
     #map { position: fixed; width: 100%; height: 100%; display: none; }
-    #panel { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; background: white; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); display: none; z-index: 100; padding: 20px; box-sizing: border-box; }
-    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .close-btn { background: #eee; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; padding: 7px; color: black;}
-    .panel-link { display: block; padding: 15px; margin-top: 10px; background: #f0f2f5; color: #4f46e5; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 500; }
+    
+    /* New Modal Design */
+    #panel { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: none; z-index: 100; overflow: hidden; }
+    .panel-img { width: 100%; height: 180px; object-fit: cover; background: #eee; }
+    .panel-body { padding: 20px; }
+    .panel-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .close-btn { background: rgba(0,0,0,0.1); border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    
+    /* Collapsible Info */
+    .info-header { margin: 15px 0 5px; font-weight: bold; color: #444; cursor: pointer; display: flex; justify-content: space-between; }
+    #infoText { color: #666; font-size: 14px; line-height: 1.5; display: none; margin-bottom: 15px; }
+    
+    .button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+    .panel-link { padding: 12px; background: #f0f2f5; color: #4f46e5; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 600; font-size: 14px; }
+    .dir-link { background: #4f46e5; color: white; }
+
     #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); display: none; justify-content: center; align-items: center; z-index: 200; }
   </style>
 </head>
@@ -25,26 +38,36 @@
   <div class="card">
     <h2>Find a Group</h2>
     <input id="address" type="text" placeholder="Enter your address...">
-    <br><br><br>
-    <button onclick="goToMap()">View Nearby Groups</button>
+    <br><br>
+    <button class="primary-btn" onclick="goToMap()">View Nearby Groups</button>
   </div>
 </div>
 
-<div id="loader">Loading groups...</div>
+<div id="loader">Loading...</div>
 <div id="map"></div>
 
 <div id="panel">
-  <div class="panel-header">
-    <h3 id="title" style="margin:0"></h3>
-    <!-- <button class="close-btn" onclick="closePanel()">✕</button> -->
+  <img id="groupPhoto" class="panel-img" src="" alt="Group Image">
+  <div class="panel-body">
+    <div class="panel-header">
+      <h2 id="title" style="margin:0; font-size: 20px;"></h2>
+      <button class="close-btn" onclick="closePanel()">✕</button>
+    </div>
+
+    <div class="info-container">
+      <div class="info-header" onclick="toggleInfo()">Details <span>▼</span></div>
+      <div id="infoText"></div>
+    </div>
+
+    <div class="button-group">
+      <a id="addressLink" class="panel-link dir-link" target="_blank">Directions</a>
+      <a id="phoneLink" class="panel-link">Call</a>
+    </div>
   </div>
-  <a id="addressLink" class="panel-link" target="_blank"></a>
-  <a id="phoneLink" class="panel-link"></a>
 </div>
 
 <script>
-let selectedPlace;
-let map;
+let selectedPlace, map;
 const API_URL = "https://script.google.com/macros/s/AKfycbzEOFkrh9MuJChAnfVZXAzBAUmO-WrMQ3wGq6l80gjGRRno79tVEZvdkzTrvackh1NX/exec"; 
 
 function initAutocomplete() {
@@ -54,14 +77,10 @@ function initAutocomplete() {
     selectedPlace = autocomplete.getPlace();
   });
 }
-
 window.onload = initAutocomplete;
 
 function goToMap() {
-  if (!selectedPlace || !selectedPlace.geometry) {
-    alert("Please select an address from the dropdown list.");
-    return;
-  }
+  if (!selectedPlace || !selectedPlace.geometry) { alert("Please select an address."); return; }
   document.getElementById("step1").style.display = "none";
   document.getElementById("map").style.display = "block";
   document.getElementById("loader").style.display = "flex";
@@ -71,73 +90,43 @@ function goToMap() {
 function initMap() {
   const userLoc = selectedPlace.geometry.location;
   map = new google.maps.Map(document.getElementById("map"), {
-    center: userLoc,
-    zoom: 12, 
-    disableDefaultUI: true,
-    zoomControl: true
+    center: userLoc, zoom: 12, disableDefaultUI: true, zoomControl: true
   });
 
-  // CLOSE PANEL ON MAP CLICK
-  map.addListener("click", () => {
-    closePanel();
-  });
-
-  // User location marker (Blue dot)
-  new google.maps.Marker({
-    position: userLoc,
-    map: map,
-    icon: {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 8,
-      fillColor: "#4f46e5",
-      fillOpacity: 1,
-      strokeWeight: 2,
-      strokeColor: "white"
-    }
-  });
+  map.addListener("click", closePanel);
 
   fetch(API_URL)
     .then(res => res.json())
     .then(data => {
       document.getElementById("loader").style.display = "none";
       data.forEach(loc => {
-        // Create a Red Circle
-        const groupCircle = new google.maps.Circle({
-          strokeColor: "#FF0000", // Pure Red
-          strokeOpacity: 0.6,
-          strokeWeight: 2,
-          fillColor: "#FF0000",   // Pure Red
-          fillOpacity: 0.3,       // Soft transparency
-          map: map,
-          center: { lat: parseFloat(loc.lat), lng: parseFloat(loc.lng) },
-          radius: 1000 // 1km radius
+        const circle = new google.maps.Circle({
+          strokeColor: "#FF0000", fillColor: "#FF0000", fillOpacity: 0.3,
+          map: map, center: { lat: parseFloat(loc.lat), lng: parseFloat(loc.lng) }, radius: 1000
         });
-
-        // Click listener for the red zone
-        groupCircle.addListener("click", (e) => {
-          if (e.stop) e.stop();
-          openPanel(loc);
-        });
+        circle.addListener("click", (e) => { if (e.stop) e.stop(); openPanel(loc); });
       });
-    })
-    .catch(err => {
-      console.error("Fetch error:", err);
-      document.getElementById("loader").style.display = "none";
     });
 }
 
 function openPanel(loc) {
   document.getElementById("panel").style.display = "block";
+  document.getElementById("groupPhoto").src = loc.photo || "https://via.placeholder.com/400x200?text=No+Photo";
   document.getElementById("title").innerText = loc.name;
-  document.getElementById("addressLink").innerText = "📍 " + loc.address;
-  document.getElementById("addressLink").href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(loc.address);
-  document.getElementById("phoneLink").innerText = "📞 " + loc.contact;
+  document.getElementById("infoText").innerText = loc.description || "No additional info provided.";
+  document.getElementById("infoText").style.display = "none"; // Reset collapse
+  
+  document.getElementById("addressLink").href = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(loc.address);
+  document.getElementById("phoneLink").innerText = "Call";
   document.getElementById("phoneLink").href = "tel:" + loc.contact.replace(/\D/g,'');
 }
 
-function closePanel() {
-  document.getElementById("panel").style.display = "none";
+function toggleInfo() {
+  const info = document.getElementById("infoText");
+  info.style.display = info.style.display === "block" ? "none" : "block";
 }
+
+function closePanel() { document.getElementById("panel").style.display = "none"; }
 </script>
 </body>
 </html>
