@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuTtPhCKTfi-9Oo3qKdckV6fS6nt5I1H4</p>
+<p class="p1">&amp;libraries=places"&gt;&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>html, body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>#step1 {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: fixed;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f5f7fb;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 90%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 420px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>input {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>button {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #4f46e5;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>#map {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: fixed;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>#panel {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: fixed;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>bottom: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.panel-content {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 92%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 auto 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.panel-link {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 10px 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f5f7fb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #4f46e5;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="step1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Enter Address&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input id="address" placeholder="Start typing..." /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="goToMap()"&gt;Next&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="map"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="panel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="panel-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h3 id="title"&gt;&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;a id="addressLink" class="panel-link" target="_blank"&gt;&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;a id="phoneLink" class="panel-link"&gt;&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">let selectedPlace;</p>
+<p class="p1">let map;</p>
+<p class="p2"><br></p>
+<p class="p1">const API_URL = "YOUR_APPS_SCRIPT_URL";</p>
+<p class="p2"><br></p>
+<p class="p1">function initAutocomplete() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const input = document.getElementById("address");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const autocomplete = new google.maps.places.Autocomplete(input);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>autocomplete.addListener("place_changed", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>selectedPlace = autocomplete.getPlace();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">window.onload = initAutocomplete;</p>
+<p class="p2"><br></p>
+<p class="p1">function goToMap() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!selectedPlace || !selectedPlace.geometry) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>alert("Select a valid address");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("step1").style.display = "none";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("map").style.display = "block";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>initMap();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function initMap() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const location = selectedPlace.geometry.location;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>map = new google.maps.Map(document.getElementById("map"), {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>center: location,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>zoom: 11,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gestureHandling: "greedy"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>new google.maps.Circle({</p>
+<p class="p1"><span class="Apple-converted-space">    </span>map,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>center: location,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>radius: 16093</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>fetch(API_URL)</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.then(res =&gt; res.json())</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.then(locations =&gt; {</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>locations.forEach(loc =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const marker = new google.maps.Marker({</p>
+<p class="p1"><span class="Apple-converted-space">          </span>position: { lat: loc.lat, lng: loc.lng },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>map</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>marker.addListener("click", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>openPanel(loc);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function openPanel(loc) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("panel").style.display = "block";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("title").innerText = loc.name;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("addressLink").innerText = "📍 " + loc.address;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("addressLink").href =</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"https://www.google.com/maps/dir/?api=1&amp;destination=" + encodeURIComponent(loc.address);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("phoneLink").innerText = "📞 " + loc.contact;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("phoneLink").href =</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"tel:" + loc.contact.replace(/[^0-9+]/g, '');</p>
+<p class="p1">}</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
