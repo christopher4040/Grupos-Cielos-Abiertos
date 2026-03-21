@@ -10,11 +10,11 @@
     #step1 { position: fixed; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; background: #f5f7fb; }
     .card { width: 90%; max-width: 400px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
     input { width: 100%; padding: 15px; font-size: 16px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-    button { margin-top: 20px; width: 100%; padding: 15px; background: #4f46e5; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    button { margin-top: 20px; width: 100%; padding: 15px; background: #4f46e5; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
     #map { position: fixed; width: 100%; height: 100%; display: none; }
     #panel { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; background: white; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); display: none; z-index: 100; padding: 20px; box-sizing: border-box; }
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .close-btn { background: #eee; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; }
+    .close-btn { background: #eee; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; padding: 7px; }
     .panel-link { display: block; padding: 15px; margin-top: 10px; background: #f0f2f5; color: #4f46e5; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 500; }
     #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); display: none; justify-content: center; align-items: center; z-index: 200; }
   </style>
@@ -25,6 +25,7 @@
   <div class="card">
     <h2>Find a Group</h2>
     <input id="address" type="text" placeholder="Enter your address...">
+    <br><br><br>
     <button onclick="goToMap()">View Nearby Groups</button>
   </div>
 </div>
