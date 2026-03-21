@@ -72,7 +72,7 @@ function initMap() {
   const userLoc = selectedPlace.geometry.location;
   map = new google.maps.Map(document.getElementById("map"), {
     center: userLoc,
-    zoom: 12,
+    zoom: 12, // You might want to zoom out slightly to see 1km circles better
     disableDefaultUI: true,
     zoomControl: true
   });
@@ -82,12 +82,13 @@ function initMap() {
     closePanel();
   });
 
+  // User location marker (Keep this as a solid dot so the user knows where they are)
   new google.maps.Marker({
     position: userLoc,
     map: map,
     icon: {
       path: google.maps.SymbolPath.CIRCLE,
-      scale: 10,
+      scale: 8,
       fillColor: "#4f46e5",
       fillOpacity: 1,
       strokeWeight: 2,
@@ -100,11 +101,20 @@ function initMap() {
     .then(data => {
       document.getElementById("loader").style.display = "none";
       data.forEach(loc => {
-        const marker = new google.maps.Marker({
-          position: { lat: parseFloat(loc.lat), lng: parseFloat(loc.lng) },
-          map: map
+        // Create a Circle instead of a Marker
+        const groupCircle = new google.maps.Circle({
+          strokeColor: "#87CEEB", // Sky Blue
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: "#87CEEB",
+          fillOpacity: 0.35,
+          map: map,
+          center: { lat: parseFloat(loc.lat), lng: parseFloat(loc.lng) },
+          radius: 1000 // 1km in meters
         });
-        marker.addListener("click", (e) => {
+
+        // Add the click listener to the circle itself
+        groupCircle.addListener("click", (e) => {
           // Stop the click from bubbling to the map listener
           if (e.stop) e.stop();
           openPanel(loc);
