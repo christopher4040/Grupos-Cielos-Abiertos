@@ -99,8 +99,17 @@ function initMap() {
       document.getElementById("loader").style.display = "none";
       data.forEach(loc => {
         const circle = new google.maps.Circle({
-          strokeColor: "#FF0000", fillColor: "#FF0000", fillOpacity: 0.3,
-          map: map, center: { lat: parseFloat(loc.lat), lng: parseFloat(loc.lng) }, radius: 1000
+          strokeColor: "#F87171",   // A softer, coral-red
+          strokeOpacity: 0.6,      // Makes the border slightly transparent
+          strokeWeight: 1,         // Thins the border (default is usually 2 or higher)
+          fillColor: "#FCA5A5",    // A lighter pastel red
+          fillOpacity: 0.2, 
+          map: map, 
+          center: { 
+            lat: parseFloat(loc.lat), 
+            lng: parseFloat(loc.lng) 
+          }, 
+          radius: 1000
         });
         circle.addListener("click", (e) => { if (e.stop) e.stop(); openPanel(loc); });
       });
