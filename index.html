@@ -59,8 +59,7 @@
     </div>
 
     <div class="button-group">
-      <a id="addressLink" class="panel-link dir-link" target="_blank">Directions</a>
-      <a id="phoneLink" class="panel-link">Call</a>
+      <a id="refLink" class="panel-link dir-link" target="_blank">See more info</a>
     </div>
   </div>
 </div>
@@ -113,11 +112,11 @@ function openPanel(loc) {
   document.getElementById("groupPhoto").src = loc.photo || "https://via.placeholder.com/400x200?text=No+Photo";
   document.getElementById("title").innerText = loc.name;
   document.getElementById("infoText").innerText = loc.description || "No additional info provided.";
-  document.getElementById("infoText").style.display = "none"; // Reset collapse
+  document.getElementById("infoText").style.display = "none"; 
   
-  document.getElementById("addressLink").href = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(loc.address);
-  document.getElementById("phoneLink").innerText = "Call";
-  document.getElementById("phoneLink").href = "tel:" + loc.contact.replace(/\D/g,'');
+  // Use the specific link from your spreadsheet (Column F)
+  // Ensure 'link' matches the key name sent by your Google Apps Script
+  document.getElementById("refLink").href = loc.link || "#";
 }
 
 function toggleInfo() {
