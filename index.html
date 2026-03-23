@@ -23,11 +23,40 @@
     
     /* Collapsible Info */
     .info-header { margin: 15px 0 5px; font-weight: bold; color: #444; cursor: pointer; display: flex; justify-content: space-between; }
-    #infoText { color: #666; font-size: 14px; line-height: 1.5; display: none; margin-bottom: 15px; }
+    /* The text container limited to 4 lines */
+    #infoText { 
+      color: #666; 
+      font-size: 14px; 
+      line-height: 1.5; 
+      margin: 10px 0 5px;
+      display: -webkit-box;
+      -webkit-line-clamp: 4; 
+      -webkit-box-orient: vertical;  
+      overflow: hidden;
+    }
     
-    .button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+    /* When expanded, show all text */
+    #infoText.expanded {
+      display: block;
+      -webkit-line-clamp: none;
+    }
+    
+    /* The "Read more" button style */
+    .read-more-btn {
+      color: #4f46e5;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      display: block;
+      text-align: left;
+    }
+    
+    .button-group { display: flex; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; justify-content: center;}
     .panel-link { padding: 12px; background: #f0f2f5; color: #4f46e5; text-decoration: none; border-radius: 12px; text-align: center; font-weight: 600; font-size: 14px; }
-    .dir-link { background: #4f46e5; color: white; }
+    .dir-link { background: #4f46e5; color: white; padding: 12px 24px;}
 
     #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); display: none; justify-content: center; align-items: center; z-index: 200; }
   </style>
@@ -36,7 +65,7 @@
 
 <div id="step1">
   <div class="card">
-    <h2>Find a Group</h2>
+    <h2>Encuentra un Grupo</h2>
     <input id="address" type="text" placeholder="Enter your address...">
     <br><br>
     <button class="primary-btn" onclick="goToMap()">View Nearby Groups</button>
@@ -54,12 +83,12 @@
     </div>
 
     <div class="info-container">
-      <div class="info-header" onclick="toggleInfo()">Details <span>▼</span></div>
       <div id="infoText"></div>
+      <button id="toggleBtn" class="read-more-btn" onclick="toggleInfo()">Read more</button>
     </div>
 
     <div class="button-group">
-      <a id="refLink" class="panel-link dir-link" target="_blank">See more info</a>
+      <a id="refLink" class="panel-link dir-link" target="_blank">More Info</a>
     </div>
   </div>
 </div>
@@ -116,20 +145,42 @@ function initMap() {
 }
 
 function openPanel(loc) {
+  const infoEl = document.getElementById("infoText");
+  const btnEl = document.getElementById("toggleBtn");
+  
   document.getElementById("panel").style.display = "block";
   document.getElementById("groupPhoto").src = loc.photo || "https://via.placeholder.com/400x200?text=No+Photo";
   document.getElementById("title").innerText = loc.name;
-  document.getElementById("infoText").innerText = loc.description || "No additional info provided.";
-  document.getElementById("infoText").style.display = "none"; 
   
-  // Use the specific link from your spreadsheet (Column F)
-  // Ensure 'link' matches the key name sent by your Google Apps Script
+  infoEl.innerText = loc.description || "No additional info provided.";
+  
+  // Reset state
+  infoEl.classList.remove("expanded");
+  btnEl.innerText = "Read more";
+  
+  // Optional: Hide button if text is very short (less than 4 lines)
+  // This helps keep the UI clean for short descriptions
+  if (infoEl.innerText.length < 100) {
+    btnEl.style.display = "none";
+  } else {
+    btnEl.style.display = "block";
+  }
+
   document.getElementById("refLink").href = loc.link || "#";
 }
 
 function toggleInfo() {
   const info = document.getElementById("infoText");
-  info.style.display = info.style.display === "block" ? "none" : "block";
+  const btn = document.getElementById("toggleBtn");
+  
+  info.classList.toggle("expanded");
+  
+  // Switch button text based on state
+  if (info.classList.contains("expanded")) {
+    btn.innerText = "Read less";
+  } else {
+    btn.innerText = "Read more";
+  }
 }
 
 function closePanel() { document.getElementById("panel").style.display = "none"; }
